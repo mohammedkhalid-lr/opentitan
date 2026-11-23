@@ -29,8 +29,10 @@
       desc: '''
             Verify the countermeasure(s) CONFIG.REGWEN.
             Verify that:
-            1) REGWEN cannot be set back to 1 after being set to 0 once.
-            2) If REGWEN is not set, the CTRL and ERR_CODE_TEST registers cannot be modified.
+            1) REGWEN, INT_STATE_READ_ENABLE_REGWEN, INT_STATE_WRITE_ENABLE_REGWEN, INT_STATE_HALT_ENABLE_REGWEN and GEN_ABORT_REGWEN cannot be set back to 1 after being set to 0 once.
+            2) If REGWEN is not set, the CTRL, FIPS_FORCE and ERR_CODE_TEST registers cannot be modified.
+            3) If INT_STATE_READ_ENABLE_REGWEN, INT_STATE_WRITE_ENABLE_REGWEN, INT_STATE_HALT_ENABLE_REGWEN or GEN_ABORT_REGWEN is not set, the INT_STATE_READ_ENABLE, INT_STATE_WRITE_ENABLE, INT_STATE_HALT_ENABLE or GEN_ABORT register, respectively, cannot be modified.
+            4) While INT_STATE_HALT is set, INT_STATE_NUM_REGWEN is cleared and INT_STATE_NUM cannot be modified.
             '''
       stage: V2S
       tests: ["csrng_csr_rw", "csrng_regwen"]
@@ -39,7 +41,7 @@
       name: sec_cm_config_mubi
       desc: '''
             Verify the countermeasure(s) CONFIG.MUBI.
-            Verify that upon writing invalid MUBI values to the CTRL register:
+            Verify that upon writing invalid MUBI values to any multi-bit field of the CTRL, INT_STATE_HALT and GEN_ABORT registers:
             1) the DUT signals a recoverable alert and sets the correct bit in the RECOV_ALERT_STS register, and
             2) the DUT can be configured back to a safe configuration and the RECOV_ALERT_STS register can be cleared.
             '''
